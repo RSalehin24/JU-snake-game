@@ -1,45 +1,47 @@
+let canvas;
+let canvasContext;
+let scoreSpan;
 
-// JavaScript Snake example
-// Author Jan Bodnar
-// http://zetcode.com/javascript/snake/
+let headImage;
+let appleImage;
+let bodyImage;
 
-var canvas;
-var ctx;
+let apple = {
+    x: 0,
+    y: 0,
+};
 
-var head;
-var apple;
-var ball;
+let snake = {
+    x: [],
+    y: [],
+    size: 3,
+};
 
-var dots;
-var apple_x;
-var apple_y;
+let leftDirection = false;
+let rightDirection = true;
+let upDirection = false;
+let downDirection = false;
+let inGame = true;    
 
-var leftDirection = false;
-var rightDirection = true;
-var upDirection = false;
-var downDirection = false;
-var inGame = true;    
-
-const DOT_SIZE = 10;
-const ALL_DOTS = 900;
-const MAX_RAND = 29;
 const DELAY = 140;
-const C_HEIGHT = 300;
-const C_WIDTH = 300;    
-
+const MAX_RAND = 29;
+const CELL_SIZE = 10;
+const CANVAS_WIDTH = 300; 
+const CANVAS_HEIGHT = 300;
+   
 const LEFT_KEY = 37;
 const RIGHT_KEY = 39;
 const UP_KEY = 38;
 const DOWN_KEY = 40;
 
-var x = new Array(ALL_DOTS);
-var y = new Array(ALL_DOTS);   
+let score = 0;
 
 
 function init() {
     
     canvas = document.getElementById('myCanvas');
-    ctx = canvas.getContext('2d');
+    canvasContext = canvas.getContext('2d');
+    scoreSpan = document.getElementById("score");
 
     loadImages();
     createSnake();
@@ -49,49 +51,49 @@ function init() {
 
 function loadImages() {
     
-    head = new Image();
-    head.src = 'head.png';    
+    headImage = new Image();
+    headImage.src = 'images/head.png';    
     
-    ball = new Image();
-    ball.src = 'dot.png'; 
+    bodyImage = new Image();
+    bodyImage.src = 'images/body.png'; 
     
-    apple = new Image();
-    apple.src = 'apple.png'; 
+    appleImage = new Image();
+    appleImage.src = 'images/apple.png'; 
 }
 
 function createSnake() {
 
-    dots = 3;
+    snake.size = 3;
 
-    for (var z = 0; z < dots; z++) {
-        x[z] = 50 - z * 10;
-        y[z] = 50;
+    for (let z = 0; z < snake.size; z++) {
+        snake.x[z] = 50 - z * 10;
+        snake.y[z] = 50;
     }
 }
 
 function checkApple() {
 
-    if ((x[0] == apple_x) && (y[0] == apple_y)) {
+    if ((snake.x[0] == apple.x) && (snake.y[0] == apple.y)) {
 
-        dots++;
+        
         locateApple();
     }
 }    
 
 function doDrawing() {
     
-    ctx.clearRect(0, 0, C_WIDTH, C_HEIGHT);
+    canvasContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     
     if (inGame) {
 
-        ctx.drawImage(apple, apple_x, apple_y);
+        canvasContext.drawImage(appleImage, apple.x, apple.y);
 
-        for (var z = 0; z < dots; z++) {
+        for (let z = 0; z < snake.size; z++) {
             
             if (z == 0) {
-                ctx.drawImage(head, x[z], y[z]);
+                canvasContext.drawImage(headImage, snake.x[z], snake.y[z]);
             } else {
-                ctx.drawImage(ball, x[z], y[z]);
+                canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
             }
         }    
     } else {
@@ -102,80 +104,71 @@ function doDrawing() {
 
 function gameOver() {
     
-    ctx.fillStyle = 'white';
-    ctx.textBaseline = 'middle'; 
-    ctx.textAlign = 'center'; 
-    ctx.font = 'normal bold 18px serif';
+    canvasContext.fillStyle = 'white';
+    canvasContext.textBaseline = 'middle'; 
+    canvasContext.textAlign = 'center'; 
+    canvasContext.font = 'normal bold 18px serif';
     
-    ctx.fillText('Game over', C_WIDTH/2, C_HEIGHT/2);
+    canvasContext.fillText('Game over', CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
 }
 
 function checkApple() {
 
-    if ((x[0] == apple_x) && (y[0] == apple_y)) {
+    if ((snake.x[0] == apple.x) && (snake.y[0] == apple.y)) {
 
-        dots++;
+        score++;
+        scoreSpan.innerText = score;
         locateApple();
     }
 }
 
 function move() {
 
-    for (var z = dots; z > 0; z--) {
-        x[z] = x[(z - 1)];
-        y[z] = y[(z - 1)];
+    for (let z = snake.size; z > 0; z--) {
+        snake.x[z] = snake.x[(z - 1)];
+        snake.y[z] = snake.y[(z - 1)];
     }
 
     if (leftDirection) {
-        x[0] -= DOT_SIZE;
+        snake.x[0] -= CELL_SIZE;
     }
 
     if (rightDirection) {
-        x[0] += DOT_SIZE;
+        snake.x[0] += CELL_SIZE;
     }
 
     if (upDirection) {
-        y[0] -= DOT_SIZE;
+        snake.y[0] -= CELL_SIZE;
     }
 
     if (downDirection) {
-        y[0] += DOT_SIZE;
+        snake.y[0] += CELL_SIZE;
     }
 }    
 
 function checkCollision() {
 
-    for (var z = dots; z > 0; z--) {
-
-        if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-            inGame = false;
-        }
-    }
-
-    if (y[0] >= C_HEIGHT) {
+    if (snake.y[0] >= CANVAS_HEIGHT) {
         inGame = false;
     }
 
-    if (y[0] < 0) {
+    if (snake.y[0] < 0) {
        inGame = false;
     }
 
-    if (x[0] >= C_WIDTH) {
+    if (snake.x[0] >= CANVAS_WIDTH) {
       inGame = false;
     }
 
-    if (x[0] < 0) {
+    if (snake.x[0] < 0) {
       inGame = false;
     }
 }
 
 function locateApple() {
 
-    var r = Math.floor(Math.random() * MAX_RAND);
-    apple_x = r * DOT_SIZE;
-
-    r = Math.floor(Math.random() * MAX_RAND);
-    apple_y = r * DOT_SIZE;
+    apple.x = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
+    apple.y = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
 }    
 
 function gameCycle() {
@@ -192,7 +185,7 @@ function gameCycle() {
 
 onkeydown = function(e) {
     
-    var key = e.keyCode;
+    let key = e.keyCode;
     
     if ((key == LEFT_KEY) && (!rightDirection)) {
         
