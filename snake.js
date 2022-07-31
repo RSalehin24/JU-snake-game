@@ -63,8 +63,6 @@ function loadImages() {
 
 function createSnake() {
 
-    snake.size = 3;
-
     for (let z = 0; z < snake.size; z++) {
         snake.x[z] = 50 - z * 10;
         snake.y[z] = 50;
