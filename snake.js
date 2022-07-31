@@ -67,16 +67,7 @@ function createSnake() {
         snake.x[z] = 50 - z * 10;
         snake.y[z] = 50;
     }
-}
-
-function checkApple() {
-
-    if ((snake.x[0] == apple.x) && (snake.y[0] == apple.y)) {
-
-        
-        locateApple();
-    }
-}    
+}   
 
 function doDrawing() {
     
