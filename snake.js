@@ -105,6 +105,7 @@ function checkApple() {
 
     if ((snake.x[0] == apple.x) && (snake.y[0] == apple.y)) {
 
+        snake.size++;
         score++;
         scoreSpan.innerText = score;
         locateApple();
