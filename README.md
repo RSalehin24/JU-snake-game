@@ -1,3 +1,6 @@
+```
+This game has been taken from the github repository of "janbodnar" and later it has been modified: https://github.com/janbodnar/JavaScript-Snake-Game
+```
 # JavaScript-Snake-Game
 
 ### Features in Initial Project (will be used for modification by students):
@@ -15,16 +18,12 @@
 - The speed of snake will change after eating a certain number of food, in short leveling up.
 - There can be Life system, so let's say snake will have 3 life, so it can die 3 time before game over. There will be a random life spawning like the other "food", but instead of increasing snake length it will add life up to say 9 or 99
 
-### Features present in GitHub Project:
+### Features which have been present in GitHub Repo which has been taken as base:
 - The snake can move throughout the board and eat the food.
 - It gets bigger by one cell when it eats the food.
 - The snake gets killed by hitting itself.
 - The snake gets killed by hitting the edges of the board/canvas.
 
-### Feature modifications in the GitHub Project:
+### Feature modifications in the base GitHub Repo to make it "Initial Project":
 - The snake won’t get bigger after eating the food
 - Snake won’t be killed by hitting itself
-
-```
-This game has been taken from the github repository of "janbodnar" and later it has been modified: https://github.com/janbodnar/JavaScript-Snake-Game
-```
