@@ -28,6 +28,9 @@ const MAX_RAND = 29;
 const CELL_SIZE = 10;
 const CANVAS_WIDTH = 300; 
 const CANVAS_HEIGHT = 300;
+const INCREASE_SPEED_DELAY_ONE = 100;
+const INCREASE_SPEED_DELAY_TWO = 70;
+const INCREASE_SPEED_DELAY_FINAL = 50;
    
 const LEFT_KEY = 37;
 const RIGHT_KEY = 39;
@@ -168,7 +171,7 @@ function gameCycle() {
         checkCollision();
         move();
         doDrawing();
-        setTimeout("gameCycle()", DELAY);
+        increaseSpeed();
     }
 }
 
@@ -203,4 +206,17 @@ onkeydown = function(e) {
         rightDirection = false;
         leftDirection = false;
     }        
-};    
+};
+
+function increaseSpeed() {
+
+    if(score < 15){
+        setTimeout("gameCycle()", DELAY);
+    } else if(score < 27) {
+        setTimeout("gameCycle()", INCREASE_SPEED_DELAY_ONE);
+    } else if( score < 39) {
+        setTimeout("gameCycle()", INCREASE_SPEED_DELAY_TWO);
+    } else {
+        setTimeout("gameCycle()", INCREASE_SPEED_DELAY_FINAL);
+    }
+}
