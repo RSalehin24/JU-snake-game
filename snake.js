@@ -144,7 +144,6 @@ function checkCollision() {
         }
     }
 
-
     if (snake.y[0] >= CANVAS_HEIGHT) {
         inGame = false;
     }
