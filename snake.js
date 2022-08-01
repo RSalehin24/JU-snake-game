@@ -133,26 +133,23 @@ function move() {
     if (downDirection) {
         snake.y[0] += CELL_SIZE;
     }
+
+    //handling passing through edges in x axis
+    if(snake.x[0] < 0) {
+        snake.x[0] = CANVAS_WIDTH - CELL_SIZE;
+    } 
+    else if(snake.x[0] >= CANVAS_WIDTH) {
+        snake.x[0] = 0;
+    }
+
+    //handling passing through edges in y axis
+    if(snake.y[0] < 0) {
+        snake.y[0] = CANVAS_HEIGHT - CELL_SIZE;
+    }
+    else if(snake.y[0] >= CANVAS_HEIGHT){
+        snake.y[0] = 0;
+    }
 }    
-
-function checkCollision() {
-
-    if (snake.y[0] >= CANVAS_HEIGHT) {
-        inGame = false;
-    }
-
-    if (snake.y[0] < 0) {
-       inGame = false;
-    }
-
-    if (snake.x[0] >= CANVAS_WIDTH) {
-      inGame = false;
-    }
-
-    if (snake.x[0] < 0) {
-      inGame = false;
-    }
-}
 
 function locateApple() {
 
@@ -165,7 +162,6 @@ function gameCycle() {
     if (inGame) {
 
         checkApple();
-        checkCollision();
         move();
         doDrawing();
         setTimeout("gameCycle()", DELAY);
