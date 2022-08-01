@@ -46,6 +46,8 @@ const MAX_RAND = 29;
 const CELL_SIZE = 10;
 const CANVAS_WIDTH = 300; 
 const CANVAS_HEIGHT = 300;
+const MAX_LIFE_NUMBER = 1;
+const MIN_LIFE_NUMBER = 15;
 const SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN = 5;
    
 const LEFT_KEY = 37;
@@ -331,7 +333,8 @@ function drawLife() {
 
 function checkLife() {
     if ((snake.x[0] == life.x) && (snake.y[0] == life.y)) {
-        snake.life += 4;
+        snake.life += Math.floor(Math.random() * (MAX_LIFE_NUMBER - MIN_LIFE_NUMBER+1) + MIN_LIFE_NUMBER);
+        console.log(Math.floor(Math.random() * (MAX_LIFE_NUMBER - MIN_LIFE_NUMBER+1) + MIN_LIFE_NUMBER));
         lifeSpan.innerText = snake.life;
         dissappearLife();
     }
