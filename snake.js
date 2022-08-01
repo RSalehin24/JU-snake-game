@@ -114,6 +114,13 @@ function checkApple() {
 function move() {
 
     for (let z = snake.size; z > 0; z--) {
+
+        if ((z > 4) && (snake.x[0] == snake.x[z]) && (snake.y[0] == snake.y[z])) {
+            snake.size = z-1;
+        }
+    }
+
+    for (let z = snake.size; z > 0; z--) {
         snake.x[z] = snake.x[(z - 1)];
         snake.y[z] = snake.y[(z - 1)];
     }
