@@ -137,6 +137,14 @@ function move() {
 
 function checkCollision() {
 
+    for (let z = snake.size; z > 0; z--) {
+
+        if ((z > 4) && (snake.x[0] == snake.x[z]) && (snake.y[0] == snake.y[z])) {
+            inGame = false;
+        }
+    }
+
+
     if (snake.y[0] >= CANVAS_HEIGHT) {
         inGame = false;
     }
