@@ -27,3 +27,9 @@ This game has been taken from the github repository of "janbodnar" and later it 
 ### Feature modifications in the base GitHub Repo to make it "Initial Project":
 - The snake won’t get bigger after eating the food
 - Snake won’t be killed by hitting itself
+
+```
+snake-life branch has been extended from booster-apple branch
+increase-life-food branch has been extended from snake-life branch for dependency reason
+```
+
