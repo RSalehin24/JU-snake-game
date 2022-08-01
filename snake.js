@@ -13,9 +13,10 @@ let apple = {
 };
 
 let boosterApple = {
-    x: 200,
-    y: 200,
-    showBoosterApple: true
+    x: -50,
+    y: -50,
+    locateApple: false,
+    drawBoosterApple: false,
 };
 
 let snake = {
@@ -88,8 +89,11 @@ function doDrawing() {
     if (inGame) {
 
         if(count >= SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
+            locateBoosterApple();
+            if(!boosterApple.drawBoosterApple && count == SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
+                setTimeout('dissappearBoosterApple()', 5000);
+            }
             drawBoosterApple();
-            setTimeout('dissappearBoosterApple()', 5000);
         }
 
         canvasContext.drawImage(appleImage, apple.x, apple.y);
@@ -139,8 +143,6 @@ function checkBoosterApple() {
 
 function dissappearBoosterApple() {
     count = 0;
-    boosterApple.x = -30;
-    boosterApple.y = -50;
 
     canvasContext.clearRect(0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
     canvasContext.drawImage(appleImage, apple.x, apple.y);
@@ -152,8 +154,10 @@ function dissappearBoosterApple() {
         } else {
             canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
         }
-    }    
-    locateBoosterApple();
+    }
+    
+    boosterApple.locateApple = false;
+    boosterApple.drawBoosterApple = false;
 }
 
 function move() {
@@ -203,16 +207,22 @@ function locateApple() {
 
     apple.x = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
     apple.y = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
-}
+} 
 
 function locateBoosterApple() {
 
-    boosterApple.x = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
-    boosterApple.y = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
+    if(!boosterApple.locateApple && count == SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
+
+        boosterApple.x = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
+        boosterApple.y = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
+        boosterApple.locateApple = true;
+    }
 }
 
 function drawBoosterApple() {
+    
     canvasContext.drawImage(boosterAppleImage, boosterApple.x, boosterApple.y);
+    boosterApple.drawBoosterApple = true;
 }
 
 function gameCycle() {
