@@ -1,6 +1,7 @@
 let canvas;
 let canvasContext;
 let scoreSpan;
+let lifeSpan;
 
 let headImage;
 let appleImage;
@@ -23,6 +24,7 @@ let snake = {
     x: [],
     y: [],
     size: 3,
+    life: 3,
 };
 
 let leftDirection = false;
@@ -52,6 +54,7 @@ function init() {
     canvas = document.getElementById('myCanvas');
     canvasContext = canvas.getContext('2d');
     scoreSpan = document.getElementById("score");
+    lifeSpan = document.getElementById("life");
 
     loadImages();
     createSnake();
@@ -187,19 +190,19 @@ function move() {
 function checkCollision() {
 
     if (snake.y[0] >= CANVAS_HEIGHT) {
-        inGame = false;
+        resetAfterGetKilled();
     }
 
     if (snake.y[0] < 0) {
-       inGame = false;
+        resetAfterGetKilled();
     }
 
     if (snake.x[0] >= CANVAS_WIDTH) {
-      inGame = false;
+        resetAfterGetKilled();
     }
 
     if (snake.x[0] < 0) {
-      inGame = false;
+        resetAfterGetKilled();
     }
 }
 
@@ -270,3 +273,13 @@ onkeydown = function(e) {
         leftDirection = false;
     }        
 };    
+
+function resetAfterGetKilled() {
+    snake.life--;
+    lifeSpan.innerText = snake.life;
+    if(snake.life == 0) {
+        inGame = false;
+    } else {
+        createSnake();
+    }
+}
