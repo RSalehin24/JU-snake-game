@@ -24,5 +24,5 @@
 - Snake won’t be killed by hitting itself
 
 ```
-This game is taken from the github repository of "janbodnar" and later it has been modified: https://github.com/janbodnar/JavaScript-Snake-Game
+This game has been taken from the github repository of "janbodnar" and later it has been modified: https://github.com/janbodnar/JavaScript-Snake-Game
 ```
