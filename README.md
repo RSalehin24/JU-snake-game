@@ -12,6 +12,8 @@
 - After code modification the snake should get killed by hitting itself
 - After code modification, the snake food should appear in 2 different ways, the regular and some boosted food versions. For the boosted version, the food should appear randomly like regular but with a bit large size and will disappear after 5 seconds of its appearance
 - After implementing the third feature, in the next step with some code modification, after hitting itself remaining body part from the hitting spot should disappear and the snake should survive and continue
+- The speed of snake will change after a certain number of food, in short leveling up.
+- There can be Life system, so let's say snake will have 3 life, so it can die 3 time before game over. There will be a random life spawning like the other "food", but instead of increasing snake length it will add life up to say 9 or 99
 
 ### Features present in GitHub Project:
 - The snake can move throughout the board and eat the food.
