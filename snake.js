@@ -5,6 +5,7 @@ let scoreSpan;
 let headImage;
 let appleImage;
 let bodyImage;
+let wallImage;
 
 let apple = {
     x: 0,
@@ -16,6 +17,12 @@ let snake = {
     y: [],
     size: 3,
 };
+
+let wall = {
+    x: [[100, 90, 80, 70, 60], [150, 150, 150, 150, 150], [250, 240, 230, 220, 210], [75, 75, 75, 75, 75], [290, 280, 270, 260, 250], [250, 250, 250, 250, 250]],
+    y: [[30, 30, 30, 30, 30], [100, 90, 80, 70, 60], [270, 270, 270, 270, 270], [200, 210, 220, 230, 240], [60, 60, 60, 60, 60], [100, 110, 120, 130, 140]],
+    size: 5,
+}
 
 let leftDirection = false;
 let rightDirection = true;
@@ -46,6 +53,7 @@ function init() {
     loadImages();
     createSnake();
     locateApple();
+    drawWall();
     setTimeout("gameCycle()", DELAY);
 }    
 
@@ -59,6 +67,9 @@ function loadImages() {
     
     appleImage = new Image();
     appleImage.src = 'images/apple.png'; 
+
+    wallImage = new Image();
+    wallImage.src = 'images/wall.jpg    ';
 }
 
 function createSnake() {
@@ -68,6 +79,21 @@ function createSnake() {
         snake.y[z] = 50;
     }
 }   
+
+function drawWall() {
+    // locateWall();
+
+    // for (let z = 1; z < wall.size; z++) {
+    //     wall.x[z] = wall.x[0] - z * 10;
+    //     wall.y[z] = wall.y[0];
+    // }
+
+    for(let w = 0; w < 3; w++) {
+        for (let z = 0; z < wall.size; z++) {
+            canvasContext.drawImage(wallImage, wall.x[w][z], wall.y[w][z]);
+        }
+    }
+}
 
 function doDrawing() {
     
@@ -85,6 +111,8 @@ function doDrawing() {
                 canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
             }
         }    
+
+        drawWall();
     } else {
 
         gameOver();
@@ -137,6 +165,13 @@ function move() {
 
 function checkCollision() {
 
+    // for (let z = wall.size; z > 0; z--) {
+
+    //     if ((snake.x[0] == wall.x[z]) && (snake.y[0] == wall.y[z])) {
+    //         inGame = false;
+    //     }
+    // }
+
     if (snake.y[0] >= CANVAS_HEIGHT) {
         inGame = false;
     }
@@ -159,6 +194,12 @@ function locateApple() {
     apple.x = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
     apple.y = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
 }    
+
+function locateWall() {
+
+    wall.x[0] = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
+    wall.y[0] = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
+} 
 
 function gameCycle() {
     
@@ -203,4 +244,4 @@ onkeydown = function(e) {
         rightDirection = false;
         leftDirection = false;
     }        
-};    
+};
