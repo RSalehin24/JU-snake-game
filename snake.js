@@ -288,7 +288,7 @@ onkeydown = function(e) {
 
 function checkLevel() {
 
-    if(appleEatenCount > 1 && level === 0 && !currentDoor.show) {
+    if(appleEatenCount > 15 && level === 0 && !currentDoor.show) {
         setDoorLocation();
         drawDoor();
     } else if(appleEatenCount >27 && level === 1 && !currentDoor.show) {
