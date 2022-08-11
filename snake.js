@@ -284,13 +284,13 @@ onkeydown = function(e) {
 
 function checkLevel() {
 
-    if(appleEatenCount > 1 && level === 0 && !currentDoor.show) {
+    if(appleEatenCount > 15 && level === 0 && !currentDoor.show) {
         setDoorLocation();
         drawDoor();
-    } else if(appleEatenCount > 3 && level === 1 && !currentDoor.show) {
+    } else if(appleEatenCount >27 && level === 1 && !currentDoor.show) {
         setDoorLocation();
         drawDoor();
-    } else if(appleEatenCount > 5 && level === 2 && !currentDoor.show) {
+    } else if(appleEatenCount >39 && level === 2 && !currentDoor.show) {
         setDoorLocation();
         drawDoor();
     }
