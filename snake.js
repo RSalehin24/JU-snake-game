@@ -7,6 +7,7 @@ let headImage;
 let appleImage;
 let bodyImage;
 let wallImage;
+let doorImage;
 
 let apple = {
     x: 0,
@@ -89,7 +90,10 @@ function loadImages() {
     appleImage.src = 'images/apple.png'; 
 
     wallImage = new Image();
-    wallImage.src = 'images/wall.jpg    ';
+    wallImage.src = 'images/wall.jpg';
+
+    doorImage = new Image();
+    doorImage.src = 'images/door.png';
 }
 
 function createSnake() {
@@ -284,7 +288,7 @@ onkeydown = function(e) {
 
 function checkLevel() {
 
-    if(appleEatenCount > 15 && level === 0 && !currentDoor.show) {
+    if(appleEatenCount > 1 && level === 0 && !currentDoor.show) {
         setDoorLocation();
         drawDoor();
     } else if(appleEatenCount >27 && level === 1 && !currentDoor.show) {
@@ -316,8 +320,8 @@ function setDoorLocation() {
 function drawDoor() {
     if(currentDoor.show) {
         for(let d = 0; d < currentDoor.size; d++) {
-            canvasContext.drawImage(wallImage, currentDoor.x[0][d], currentDoor.y[0][d]);
-            canvasContext.drawImage(wallImage, currentDoor.x[1][d], currentDoor.y[1][d]);
+            canvasContext.drawImage(doorImage, currentDoor.x[0][d], currentDoor.y[0][d]);
+            canvasContext.drawImage(doorImage, currentDoor.x[1][d], currentDoor.y[1][d]);
         }
     }
 };
