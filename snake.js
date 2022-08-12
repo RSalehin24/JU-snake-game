@@ -54,6 +54,9 @@ const MAX_RAND = 29;
 const CELL_SIZE = 10;
 const CANVAS_WIDTH = 300; 
 const CANVAS_HEIGHT = 300;
+const CHECK_FIRST_LEVEL_APPLE_EATEN = 15;
+const CHECK_SECOND_LEVEL_APPLE_EATEN = 27;
+const CHECK_THIRD_LEVEL_APPLE_EATEN = 39;
    
 const LEFT_KEY = 37;
 const RIGHT_KEY = 39;
@@ -73,7 +76,7 @@ function init() {
 
     loadImages();
     createSnake();
-    locateApple();
+    locateAppleNotWallDoorPosition();
     drawWall();
     setTimeout("gameCycle()", DELAY);
 }    
@@ -104,31 +107,42 @@ function createSnake() {
     }
 }   
 
-
-function doDrawing() {
-    
+function clearContext() {   
     canvasContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    
-    if (inGame) {
-
-        canvasContext.drawImage(appleImage, apple.x, apple.y);
-
-        for (let z = 0; z < snake.size; z++) {
-            
-            if (z == 0) {
-                canvasContext.drawImage(headImage, snake.x[z], snake.y[z]);
-            } else {
-                canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
-            }
-        }    
-
-       drawWall();
-       drawDoor();
-    } else {
-
-        gameOver();
-    }        
 }
+
+function drawApple() {
+    canvasContext.drawImage(appleImage, apple.x, apple.y);
+}
+
+function drawSnake() {
+    for (let z = 0; z < snake.size; z++) {
+            
+        if (z == 0) {
+            canvasContext.drawImage(headImage, snake.x[z], snake.y[z]);
+        } else {
+            canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
+        }
+    }    
+}
+
+function drawDoor() {
+    if(currentDoor.show) {
+        for(let d = 0; d < currentDoor.size; d++) {
+            canvasContext.drawImage(doorImage, currentDoor.x[0][d], currentDoor.y[0][d]);
+            canvasContext.drawImage(doorImage, currentDoor.x[1][d], currentDoor.y[1][d]);
+        }
+    }
+};
+
+function drawWall() {
+
+    for(let w = 0; w < 4; w++) {
+        for (let z = 0; z < currentWall.size; z++) {
+            canvasContext.drawImage(wallImage, currentWall.x[w][z], currentWall.y[w][z]);
+        }
+    }
+};
 
 function gameOver() {
     
@@ -140,40 +154,155 @@ function gameOver() {
     canvasContext.fillText('Game over', CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
 }
 
-function checkApple() {
+function doDrawing() {
+    
+    clearContext();
+    
+    if (inGame) {
 
-    if ((snake.x[0] == apple.x) && (snake.y[0] == apple.y)) {
+        drawApple();
+        drawSnake();
+        drawWall();
+        drawDoor();
+    } else {
 
-        score++;
-        appleEatenCount++;
-        scoreSpan.innerText = score;
-        locateApple();
+        gameOver();
+    }        
+}
+
+function checkCollisionDoor(d) {
+    if(snake.x[0] == currentDoor.x[0][d] && snake.y[0] == currentDoor.y[0][d]) {
+        inGame = false;
+    }
+
+    if(snake.x[0] == currentDoor.x[1][d] && snake.y[0] == currentDoor.y[1][d]) {
+        inGame = false;
     }
 }
 
-function move() {
+function goneThroughTheDoor() {
+    level++;
+    appleEatenCount = 0;
+    levelSpan.innerText = level;
+    currentDoor.show = false;
+    updateWallLocation();
+    drawWall();
+}
 
-    for (let z = snake.size; z > 0; z--) {
-        snake.x[z] = snake.x[(z - 1)];
-        snake.y[z] = snake.y[(z - 1)];
+function checkSnakeInDoor(d, gone, doorFirstX, doorFirstY) {
+    if(!(currentDoor.x[0][currentDoor.size - 1] === currentDoor.x[0][currentDoor.size - 2])) {
+        if(snake.x[0] == (doorFirstX + d*10) && snake.y[0] == doorFirstY) {
+            goneThroughTheDoor();
+            gone = true;
+            return gone;
+        }
+    } else {
+        if(snake.x[0] == doorFirstX && snake.y[0] == (doorFirstY + d*10)) {
+            goneThroughTheDoor();
+            gone = true;
+            return gone;
+        }
+    }
+    return gone;
+}
+
+function checkDoorPass() {
+    if(currentDoor.show) {
+        let doorFirstX;
+        let doorFirstY;
+
+        if(!(currentDoor.x[0][currentDoor.size - 1] === currentDoor.x[0][currentDoor.size - 2])) {
+            doorFirstX = currentDoor.x[0][currentDoor.size - 1] + 10;
+            doorFirstY = currentDoor.y[0][currentDoor.size - 1];
+        } else {
+            doorFirstY = currentDoor.y[0][currentDoor.size - 1] + 10;
+            doorFirstX = currentDoor.x[0][currentDoor.size - 1];
+        }
+
+        
+        for(let d = 0; d < currentDoor.size; d++) {
+            let gone = false;
+            checkCollisionDoor(d);
+            if(!inGame) return;
+            gone = checkSnakeInDoor(d, gone, doorFirstX, doorFirstY);
+            if(gone) return;
+        }
+    }
+}
+
+function locateApple() {
+    apple.x = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
+    apple.y = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
+} 
+
+function appleNotInWall(isSame) {
+    for(let w = 0; w < 4; w++) {
+        for (let z = 0; z < currentWall.size; z++) {
+            if(apple.x == currentWall.x[w][z] && apple.y == currentWall.y[w][z]) {
+                isSame = true;
+                return isSame;
+            }
+        }
+    }
+    return isSame;
+}
+
+function appleNotInDoor(isSame) {
+    if(currentDoor.show) {
+        for(let d = 0; d < currentDoor.size; d++) {
+            if(apple.x ==  currentDoor.x[0][d] && apple.y == currentDoor.y[0][d] || apple.x ==  currentDoor.x[1][d] && apple.y == currentDoor.y[1][d]) {
+                isSame = true;
+                return isSame;
+            }
+        }
+    }
+    return isSame;
+}
+
+function locateAppleNotWallDoorPosition() {
+    let isSame = false;
+
+    while(true) {
+
+        locateApple();
+        isSame = appleNotInWall(isSame);
+        if(isSame) {
+            continue;
+        }
+        isSame = appleNotInDoor(isSame);
+        if(!isSame) {
+            break;
+        }
+    }
+}
+
+function setDoorLocation() {
+    if(level === 0) {
+        currentDoor.x = [door.x[0], door.x[1]];
+        currentDoor.y = [door.y[0], door.y[1]];
+    } else if(level === 1) {
+        currentDoor.x = [door.x[2], door.x[3]];
+        currentDoor.y = [door.y[2], door.y[3]];
+    } else if(level === 2) {
+        currentDoor.x = [door.x[4], door.x[5]];
+        currentDoor.y = [door.y[4], door.y[5]];
     }
 
-    if (leftDirection) {
-        snake.x[0] -= CELL_SIZE;
-    }
+    currentDoor.show = true;
+};  
 
-    if (rightDirection) {
-        snake.x[0] += CELL_SIZE;
+function updateWallLocation() {
+    if(level === 1) {
+        currentWall.x = [wall.x[4], wall.x[5], wall.x[6], wall.x[7]];
+        currentWall.y = [wall.y[4], wall.y[5], wall.y[6], wall.y[7]];
+    } else if(level === 2) {
+        currentWall.x = [wall.x[8], wall.x[9], wall.x[0], wall.x[1]];
+        currentWall.y = [wall.y[8], wall.y[9], wall.y[0], wall.y[1]];
+    } else if(level === 3) {
+        currentWall.x = [wall.x[8], wall.x[6], wall.x[3], wall.x[7]];
+        currentWall.y = [wall.y[8], wall.y[6], wall.y[3], wall.y[7]];
     }
-
-    if (upDirection) {
-        snake.y[0] -= CELL_SIZE;
-    }
-
-    if (downDirection) {
-        snake.y[0] += CELL_SIZE;
-    }
-}    
+};
 
 function checkCollision() {
 
@@ -194,64 +323,44 @@ function checkCollision() {
     }
 }
 
-function locateApple() {
-    let isSame = false;
+function checkWallCollision() {
 
-    while(true) {
-        apple.x = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
-        apple.y = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
-
-        for(let w = 0; w < 4; w++) {
-            for (let z = 0; z < currentWall.size; z++) {
-                if(apple.x == currentWall.x[w][z] && apple.y == currentWall.y[w][z]) {
-                    isSame = true;
-                    break;
-                }
-            }
-            if(isSame) {
+    for(let w = 0; w < 4; w++) {
+        for (let z = 0; z < currentWall.size; z++) {
+            if(snake.x[0] == currentWall.x[w][z] && snake.y[0] == currentWall.y[w][z]) {
+                inGame = false;
                 break;
             }
         }
-        
-        if(isSame) {
-            continue;
-        }
-
-        if(currentDoor.show) {
-
-            for(let d = 0; d < currentDoor.size; d++) {
-                if(apple.x ==  currentDoor.x[0][d] && apple.y == currentDoor.y[0][d] || apple.x ==  currentDoor.x[1][d] && apple.y == currentDoor.y[1][d]) {
-                    isSame = true;
-                    break;
-                }
-            }
-
-            if(isSame) {
-                continue;
-            } else {
-                break;
-            }
-        }
-        
-
-        if(!isSame) {
-            break;
-        }
-    }
-}    
-
-function gameCycle() {
-    
-    if (inGame) {
-        checkWallCollision();
-        checkLevel();
-        checkApple();
-        checkCollision();
-        move();
-        doDrawing();
-        setTimeout("gameCycle()", DELAY);
     }
 }
+
+function checkLevel() {
+
+    if(appleEatenCount > CHECK_FIRST_LEVEL_APPLE_EATEN && level === 0 && !currentDoor.show) {
+        setDoorLocation();
+        drawDoor();
+    } else if(appleEatenCount > CHECK_SECOND_LEVEL_APPLE_EATEN && level === 1 && !currentDoor.show) {
+        setDoorLocation();
+        drawDoor();
+    } else if(appleEatenCount > CHECK_THIRD_LEVEL_APPLE_EATEN && level === 2 && !currentDoor.show) {
+        setDoorLocation();
+        drawDoor();
+    }
+
+    checkDoorPass();
+};
+
+function checkApple() {
+
+    if ((snake.x[0] == apple.x) && (snake.y[0] == apple.y)) {
+
+        score++;
+        appleEatenCount++;
+        scoreSpan.innerText = score;
+        locateAppleNotWallDoorPosition();
+    }
+};
 
 onkeydown = function(e) {
     
@@ -286,124 +395,39 @@ onkeydown = function(e) {
     }        
 };
 
-function checkLevel() {
+function move() {
 
-    if(appleEatenCount > 15 && level === 0 && !currentDoor.show) {
-        setDoorLocation();
-        drawDoor();
-    } else if(appleEatenCount >27 && level === 1 && !currentDoor.show) {
-        setDoorLocation();
-        drawDoor();
-    } else if(appleEatenCount >39 && level === 2 && !currentDoor.show) {
-        setDoorLocation();
-        drawDoor();
+    for (let z = snake.size; z > 0; z--) {
+        snake.x[z] = snake.x[(z - 1)];
+        snake.y[z] = snake.y[(z - 1)];
     }
 
-    checkDoorPass();
-};
-
-function setDoorLocation() {
-    if(level === 0) {
-        currentDoor.x = [door.x[0], door.x[1]];
-        currentDoor.y = [door.y[0], door.y[1]];
-    } else if(level === 1) {
-        currentDoor.x = [door.x[2], door.x[3]];
-        currentDoor.y = [door.y[2], door.y[3]];
-    } else if(level === 2) {
-        currentDoor.x = [door.x[4], door.x[5]];
-        currentDoor.y = [door.y[4], door.y[5]];
+    if (leftDirection) {
+        snake.x[0] -= CELL_SIZE;
     }
 
-    currentDoor.show = true;
-};
-
-function drawDoor() {
-    if(currentDoor.show) {
-        for(let d = 0; d < currentDoor.size; d++) {
-            canvasContext.drawImage(doorImage, currentDoor.x[0][d], currentDoor.y[0][d]);
-            canvasContext.drawImage(doorImage, currentDoor.x[1][d], currentDoor.y[1][d]);
-        }
+    if (rightDirection) {
+        snake.x[0] += CELL_SIZE;
     }
-};
 
-function checkDoorPass() {
-    if(currentDoor.show) {
-        let doorFirstX;
-        let doorFirstY;
-
-        if(!(currentDoor.x[0][currentDoor.size - 1] === currentDoor.x[0][currentDoor.size - 2])) {
-            doorFirstX = currentDoor.x[0][currentDoor.size - 1] + 10;
-            doorFirstY = currentDoor.y[0][currentDoor.size - 1];
-        } else {
-            doorFirstY = currentDoor.y[0][currentDoor.size - 1] + 10;
-            doorFirstX = currentDoor.x[0][currentDoor.size - 1];
-        }
-        
-        for(let d = 0; d < currentDoor.size; d++) {
-            if(snake.x[0] == currentDoor.x[0][d] && snake.y[0] == currentDoor.y[0][d]) {
-                inGame = false;
-                break;
-            }
-
-            if(snake.x[0] == currentDoor.x[1][d] && snake.y[0] == currentDoor.y[1][d]) {
-                inGame = false;
-                break;
-            }
-
-            if(!(currentDoor.x[0][currentDoor.size - 1] === currentDoor.x[0][currentDoor.size - 2])) {
-                if(snake.x[0] == (doorFirstX + d*10) && snake.y[0] == doorFirstY) {
-                    goneThroughTheDoor();
-                    break;
-                }
-            } else {
-                if(snake.x[0] == doorFirstX && snake.y[0] == (doorFirstY + d*10)) {
-                    goneThroughTheDoor();
-                    break;
-                }
-            }
-        }
+    if (upDirection) {
+        snake.y[0] -= CELL_SIZE;
     }
-}
 
-function goneThroughTheDoor() {
-    level++;
-    appleEatenCount = 0;
-    levelSpan.innerText = level;
-    currentDoor.show = false;
-    updateWallLocation();
-    drawWall();
-}
-
-function updateWallLocation() {
-    if(level === 1) {
-        currentWall.x = [wall.x[4], wall.x[5], wall.x[6], wall.x[7]];
-        currentWall.y = [wall.y[4], wall.y[5], wall.y[6], wall.y[7]];
-    } else if(level === 2) {
-        currentWall.x = [wall.x[8], wall.x[9], wall.x[0], wall.x[1]];
-        currentWall.y = [wall.y[8], wall.y[9], wall.y[0], wall.y[1]];
-    } else if(level === 3) {
-        currentWall.x = [wall.x[8], wall.x[6], wall.x[3], wall.x[7]];
-        currentWall.y = [wall.y[8], wall.y[6], wall.y[3], wall.y[7]];
+    if (downDirection) {
+        snake.y[0] += CELL_SIZE;
     }
-};
+} 
 
-function drawWall() {
-
-    for(let w = 0; w < 4; w++) {
-        for (let z = 0; z < currentWall.size; z++) {
-            canvasContext.drawImage(wallImage, currentWall.x[w][z], currentWall.y[w][z]);
-        }
-    }
-}
-
-function checkWallCollision() {
-
-    for(let w = 0; w < 4; w++) {
-        for (let z = 0; z < currentWall.size; z++) {
-            if(snake.x[0] == currentWall.x[w][z] && snake.y[0] == currentWall.y[w][z]) {
-                inGame = false;
-                break;
-            }
-        }
+function gameCycle() {
+    
+    if (inGame) {
+        checkWallCollision();
+        checkLevel();
+        checkApple();
+        checkCollision();
+        move();
+        doDrawing();
+        setTimeout("gameCycle()", DELAY);
     }
 }
