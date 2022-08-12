@@ -46,8 +46,8 @@ const MAX_RAND = 29;
 const CELL_SIZE = 10;
 const CANVAS_WIDTH = 300; 
 const CANVAS_HEIGHT = 300;
-const MAX_LIFE_NUMBER = 1;
-const MIN_LIFE_NUMBER = 15;
+const MAX_APPLE_EATEN_TO_APPEAR_LIFE = 1;
+const MIN_APPLE_EATEN_TO_APPEAR_LIFE = 15;
 const SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN = 5;
    
 const LEFT_KEY = 37;
@@ -58,7 +58,7 @@ const DOWN_KEY = 40;
 let score = 0;
 let count = 0;
 let lifeTimeCount = 0;
-let showLifeAfterAppleEaten = 13;
+let showLifeAfterAppleEaten = 1;
 
 
 function init() {
@@ -106,21 +106,8 @@ function doDrawing() {
     
     if (inGame) {
 
-        if(count >= SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
-            locateBoosterApple();
-            if(!boosterApple.drawBoosterApple && count == SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
-                setTimeout('dissappearBoosterApple()', 5000);
-            }
-            drawBoosterApple();
-        }
-
-        if(lifeTimeCount >= showLifeAfterAppleEaten){
-            locateLife();
-            if(!life.drawLife && lifeTimeCount == showLifeAfterAppleEaten) {
-                setTimeout("dissappearLife()", 2500);
-            }
-            drawLife();
-        }
+        drawBoosterApple();
+        drawLife();
 
         canvasContext.drawImage(appleImage, apple.x, apple.y);
 
@@ -170,23 +157,6 @@ function checkBoosterApple() {
 
 function dissappearBoosterApple() {
     count = 0;
-
-    canvasContext.clearRect(0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
-    canvasContext.drawImage(appleImage, apple.x, apple.y);
-
-    for (let z = 0; z < snake.size; z++) {
-        
-        if (z == 0) {
-            canvasContext.drawImage(headImage, snake.x[z], snake.y[z]);
-        } else {
-            canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
-        }
-    }
-
-    if(life.drawLife) {
-        drawLife();
-    }
-    
     boosterApple.locateApple = false;
     boosterApple.drawBoosterApple = false;
 }
@@ -251,9 +221,14 @@ function locateBoosterApple() {
 }
 
 function drawBoosterApple() {
-    
-    canvasContext.drawImage(boosterAppleImage, boosterApple.x, boosterApple.y);
-    boosterApple.drawBoosterApple = true;
+    if(count >= SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
+        locateBoosterApple();
+        if(!boosterApple.drawBoosterApple && count == SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
+            setTimeout('dissappearBoosterApple()', 5000);
+        }
+        canvasContext.drawImage(boosterAppleImage, boosterApple.x, boosterApple.y);
+        boosterApple.drawBoosterApple = true;
+    }
 }
 
 function gameCycle() {
@@ -327,14 +302,19 @@ function locateLife() {
 
 function drawLife() {
     
-    canvasContext.drawImage(lifeImage, life.x, life.y);
-    life.drawLife = true;
+    if(lifeTimeCount >= showLifeAfterAppleEaten){
+        locateLife();
+        if(!life.drawLife && lifeTimeCount == showLifeAfterAppleEaten) {
+            setTimeout("dissappearLife()", 5000);
+        }
+        canvasContext.drawImage(lifeImage, life.x, life.y);
+        life.drawLife = true;
+    }
 }
 
 function checkLife() {
     if ((snake.x[0] == life.x) && (snake.y[0] == life.y)) {
-        snake.life += Math.floor(Math.random() * (MAX_LIFE_NUMBER - MIN_LIFE_NUMBER+1) + MIN_LIFE_NUMBER);
-        console.log(Math.floor(Math.random() * (MAX_LIFE_NUMBER - MIN_LIFE_NUMBER+1) + MIN_LIFE_NUMBER));
+        snake.life += 1;
         lifeSpan.innerText = snake.life;
         dissappearLife();
     }
@@ -342,24 +322,7 @@ function checkLife() {
 
 function dissappearLife() {
     lifeTimeCount = 0;
-
-    canvasContext.clearRect(0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
-    canvasContext.drawImage(appleImage, apple.x, apple.y);
-
-    for (let z = 0; z < snake.size; z++) {
-        
-        if (z == 0) {
-            canvasContext.drawImage(headImage, snake.x[z], snake.y[z]);
-        } else {
-            canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
-        }
-    }
-
-    if(boosterApple.drawBoosterApple) {
-        drawBoosterApple();
-    }
-
-    showLifeAfterAppleEaten = Math.floor(Math.random() * MAX_RAND);
+    showLifeAfterAppleEaten = Math.floor(Math.random() * (MAX_APPLE_EATEN_TO_APPEAR_LIFE - MIN_APPLE_EATEN_TO_APPEAR_LIFE + 1) + MIN_APPLE_EATEN_TO_APPEAR_LIFE);
     life.locateLife = false;
     life.drawLife = false;
 }
