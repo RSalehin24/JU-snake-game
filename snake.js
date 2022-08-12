@@ -2,7 +2,6 @@ let canvas;
 let canvasContext;
 let scoreSpan;
 
-let headImage;
 let appleImage;
 let bodyImage;
 
@@ -34,8 +33,6 @@ const RIGHT_KEY = 39;
 const UP_KEY = 38;
 const DOWN_KEY = 40;
 
-let score = 0;
-
 
 function init() {
     
@@ -49,10 +46,7 @@ function init() {
     setTimeout("gameCycle()", DELAY);
 }    
 
-function loadImages() {
-    
-    headImage = new Image();
-    headImage.src = 'images/head.png';    
+function loadImages() {   
     
     bodyImage = new Image();
     bodyImage.src = 'images/body.png'; 
@@ -61,11 +55,15 @@ function loadImages() {
     appleImage.src = 'images/apple.png'; 
 }
 
+
+
 function createSnake() {
+    initialX = Math.floor(Math.random() * (MAX_RAND - 4)) * CELL_SIZE;
+    initialY = Math.floor(Math.random() * (MAX_RAND - 4)) * CELL_SIZE;
 
     for (let z = 0; z < snake.size; z++) {
-        snake.x[z] = 50 - z * 10;
-        snake.y[z] = 50;
+        snake.x[z] = initialX - z * 10;
+        snake.y[z] = initialY;
     }
 }   
 
@@ -78,12 +76,7 @@ function doDrawing() {
         canvasContext.drawImage(appleImage, apple.x, apple.y);
 
         for (let z = 0; z < snake.size; z++) {
-            
-            if (z == 0) {
-                canvasContext.drawImage(headImage, snake.x[z], snake.y[z]);
-            } else {
-                canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
-            }
+            canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
         }    
     } else {
 
@@ -103,12 +96,6 @@ function gameOver() {
 
 function checkApple() {
 
-    if ((snake.x[0] == apple.x) && (snake.y[0] == apple.y)) {
-
-        score++;
-        scoreSpan.innerText = score;
-        locateApple();
-    }
 }
 
 function move() {
@@ -156,8 +143,6 @@ function checkCollision() {
 
 function locateApple() {
 
-    apple.x = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
-    apple.y = Math.floor(Math.random() * MAX_RAND) * CELL_SIZE;
 }    
 
 function gameCycle() {
@@ -203,4 +188,37 @@ onkeydown = function(e) {
         rightDirection = false;
         leftDirection = false;
     }        
+
+   
+    if ((key == LEFT_KEY) && (rightDirection)) {
+
+        rightDirection = false;
+        leftDirection = true;
+        upDirection = false;
+        downDirection = false;
+    }
+
+    if ((key == RIGHT_KEY) && (leftDirection)) {
+
+        leftDirection = false
+        rightDirection = true;
+        upDirection = false;
+        downDirection = false;
+    }
+
+    if ((key == UP_KEY) && (downDirection)) {
+
+        downDirection = false;
+        upDirection = true;
+        rightDirection = false;
+        leftDirection = false;
+    }
+
+    if ((key == DOWN_KEY) && (upDirection)) {
+        
+        upDirection = false;
+        downDirection = true;
+        rightDirection = false;
+        leftDirection = false;
+    }       
 };    
