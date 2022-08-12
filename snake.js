@@ -222,7 +222,3 @@ onkeydown = function(e) {
         leftDirection = false;
     }       
 };  
-
-function reset() {
-    
-};
