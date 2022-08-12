@@ -400,7 +400,6 @@ function checkWallCollision() {
 
     for(let w = 0; w < 4; w++) {
         for (let z = 0; z < currentWall.size; z++) {
-            currentWall.x
             if(snake.x[0] == currentWall.x[w][z] && snake.y[0] == currentWall.y[w][z]) {
                 inGame = false;
                 break;
