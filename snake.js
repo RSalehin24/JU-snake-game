@@ -204,3 +204,32 @@ onkeydown = function(e) {
         leftDirection = false;
     }        
 };    
+
+function reset() {
+    apple = {
+        x: 0,
+        y: 0,
+    };
+    
+    snake = {
+        x: [],
+        y: [],
+        size: 3,
+    };
+    
+    leftDirection = false;
+    rightDirection = true;
+    upDirection = false;
+    downDirection = false;
+    score = 0;
+
+    loadImages();
+    createSnake();
+    locateApple();
+    if(!inGame) {
+        inGame = true; 
+        setTimeout("gameCycle()", DELAY);
+    } else {
+        //nothing 
+    }
+};

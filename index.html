@@ -7,6 +7,14 @@
                 background: black
             }
 
+            .reset {
+                font-size: 18px; 
+                color: #084905; 
+                border-color: #11850d; 
+                background: transparent; 
+                border-radius: 5px;
+            }
+
             .div-common {
                 display: flex; 
                 align-items: center; 
@@ -15,13 +23,13 @@
 
             .reset-div {
                 justify-content: right; 
+                margin-top: 5%;
                 margin-right: 525px;
-                margin-bottom: 25px;
+                margin-bottom: 5px;
             }
 
-            .canvas-div {
-                height: 70vh; 
-                margin-bottom: 15px;
+            .canvas-div { 
+                margin-bottom: 10px;
             }
         </style>
         <link rel="icon" type="image/x-icon" href="/images/favicon-icon.png"> 
@@ -29,7 +37,10 @@
     </head>
     
     <body onload="init();">
-
+ 
+        <div class="div-common reset-div">
+            <button class="reset" onclick="reset();">Reset</button> 
+        </div>
         <div class="div-common canvas-div">
             <canvas id="myCanvas" width="300" height="300"></canvas> 
         </div>
