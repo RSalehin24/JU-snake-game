@@ -173,7 +173,7 @@ onkeydown = function(e) {
         rightDirection = false;
         leftDirection = false;
     }        
-};  
+}  
 
 function move() {
 
