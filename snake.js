@@ -215,13 +215,17 @@ function checkDoorPass() {
         doorFirstX = doorFirstXY[0];
         doorFirstY = doorFirstXY[1];
 
-        for(let d = 0; d < currentDoor.size; d++) {
-            let gone = false;
-            checkCollisionDoor(d);
-            if(!inGame) return;
-            gone = checkSnakeInDoor(d, gone, doorFirstX, doorFirstY);
-            if(gone) return;
-        }
+        checkDoor(doorFirstX, doorFirstY);
+    }
+}
+
+function checkDoor(doorFirstX, doorFirstY) {
+    for(let d = 0; d < currentDoor.size; d++) {
+        let gone = false;
+        checkCollisionDoor(d);
+        if(!inGame) return;
+        gone = checkSnakeInDoor(d, gone, doorFirstX, doorFirstY);
+        if(gone) return;
     }
 }
 
