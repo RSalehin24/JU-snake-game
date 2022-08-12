@@ -143,19 +143,6 @@ function checkBoosterApple() {
 
 function dissappearBoosterApple() {
     count = 0;
-
-    canvasContext.clearRect(0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
-    canvasContext.drawImage(appleImage, apple.x, apple.y);
-
-    for (let z = 0; z < snake.size; z++) {
-        
-        if (z == 0) {
-            canvasContext.drawImage(headImage, snake.x[z], snake.y[z]);
-        } else {
-            canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
-        }
-    }
-    
     boosterApple.locateApple = false;
     boosterApple.drawBoosterApple = false;
 }
