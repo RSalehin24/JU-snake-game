@@ -58,12 +58,10 @@ function loadImages() {
 
 
 function createSnake() {
-    initialX = Math.floor(Math.random() * (MAX_RAND - 4)) * CELL_SIZE;
-    initialY = Math.floor(Math.random() * (MAX_RAND - 4)) * CELL_SIZE;
 
     for (let z = 0; z < snake.size; z++) {
-        snake.x[z] = initialX - z * 10;
-        snake.y[z] = initialY;
+        snake.x[z] = 50 - z * 10;
+        snake.y[z] = 50;
     }
 }   
 
@@ -188,37 +186,4 @@ onkeydown = function(e) {
         rightDirection = false;
         leftDirection = false;
     }        
-
-   
-    if ((key == LEFT_KEY) && (rightDirection)) {
-
-        rightDirection = false;
-        leftDirection = true;
-        upDirection = false;
-        downDirection = false;
-    }
-
-    if ((key == RIGHT_KEY) && (leftDirection)) {
-
-        leftDirection = false
-        rightDirection = true;
-        upDirection = false;
-        downDirection = false;
-    }
-
-    if ((key == UP_KEY) && (downDirection)) {
-
-        downDirection = false;
-        upDirection = true;
-        rightDirection = false;
-        leftDirection = false;
-    }
-
-    if ((key == DOWN_KEY) && (upDirection)) {
-        
-        upDirection = false;
-        downDirection = true;
-        rightDirection = false;
-        leftDirection = false;
-    }       
 };  
