@@ -438,7 +438,3 @@ function gameCycle() {
         setTimeout("gameCycle()", DELAY);
     }
 }
-
-function print(x) {
-    console.log(x);
-}
