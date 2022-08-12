@@ -210,16 +210,11 @@ function checkDoorPass() {
     if(currentDoor.show) {
         let doorFirstX;
         let doorFirstY;
+        let doorFirstXY = getFirstXYOfDoor(doorFirstX, doorFirstY);
 
-        if(!(currentDoor.x[0][currentDoor.size - 1] === currentDoor.x[0][currentDoor.size - 2])) {
-            doorFirstX = currentDoor.x[0][currentDoor.size - 1] + 10;
-            doorFirstY = currentDoor.y[0][currentDoor.size - 1];
-        } else {
-            doorFirstY = currentDoor.y[0][currentDoor.size - 1] + 10;
-            doorFirstX = currentDoor.x[0][currentDoor.size - 1];
-        }
+        doorFirstX = doorFirstXY[0];
+        doorFirstY = doorFirstXY[1];
 
-        
         for(let d = 0; d < currentDoor.size; d++) {
             let gone = false;
             checkCollisionDoor(d);
@@ -228,6 +223,18 @@ function checkDoorPass() {
             if(gone) return;
         }
     }
+}
+
+function getFirstXYOfDoor(doorFirstX, doorFirstY) {
+    
+    if(!(currentDoor.x[0][currentDoor.size - 1] === currentDoor.x[0][currentDoor.size - 2])) {
+        doorFirstX = currentDoor.x[0][currentDoor.size - 1] + 10;
+        doorFirstY = currentDoor.y[0][currentDoor.size - 1];
+    } else {
+        doorFirstY = currentDoor.y[0][currentDoor.size - 1] + 10;
+        doorFirstX = currentDoor.x[0][currentDoor.size - 1];
+    }
+    return [doorFirstX, doorFirstY]
 }
 
 function locateApple() {
@@ -430,4 +437,8 @@ function gameCycle() {
         doDrawing();
         setTimeout("gameCycle()", DELAY);
     }
+}
+
+function print(x) {
+    console.log(x);
 }
