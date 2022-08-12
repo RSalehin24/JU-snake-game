@@ -1,6 +1,9 @@
 let canvas;
 let canvasContext;
 let scoreSpan;
+let circularWay;
+let killedByHittingItself;
+let snakeBodyDisappear;
 
 let appleImage;
 let bodyImage;
@@ -33,8 +36,21 @@ const RIGHT_KEY = 39;
 const UP_KEY = 38;
 const DOWN_KEY = 40;
 
-
 function init() {
+
+    circularWay = document.getElementById('circular-way').checked;
+    killedByHittingItself = document.getElementById('killed-by-hitting-itself').checked;
+    snakeBodyDisappear = document.getElementById('snake-body-disappear').checked;
+
+    if(circularWay) {
+        // write the  code here
+    }
+    if(killedByHittingItself) {
+        // write the  code here
+    }
+    if(snakeBodyDisappear) {
+        // write the  code here
+    }
     
     canvas = document.getElementById('myCanvas');
     canvasContext = canvas.getContext('2d');
