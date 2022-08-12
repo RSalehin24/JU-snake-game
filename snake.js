@@ -63,9 +63,12 @@ function loadImages() {
 
 function createSnake() {
 
+    initialX = Math.floor(Math.random() * (MAX_RAND - 4)) * CELL_SIZE;
+    initialY = Math.floor(Math.random() * (MAX_RAND - 4)) * CELL_SIZE;
+
     for (let z = 0; z < snake.size; z++) {
-        snake.x[z] = 50 - z * 10;
-        snake.y[z] = 50;
+        snake.x[z] = initialX - z * CELL_SIZE;
+        snake.y[z] = initialY;
     }
 }   
 
