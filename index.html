@@ -3,18 +3,48 @@
     <head>
         <title>Snake Game</title>    
         <style>
-            canvas {background: black}
+            canvas {
+                background: black
+            }
+
+            .reset {
+                font-size: 18px; 
+                color: #084905; 
+                border-color: #11850d; 
+                background: transparent; 
+                border-radius: 5px;
+            }
+
+            .div-common {
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+            }
+
+            .reset-div {
+                justify-content: right; 
+                margin-right: 525px;
+                margin-bottom: 25px;
+            }
+
+            .canvas-div {
+                height: 70vh; 
+                margin-bottom: 15px;
+            }
         </style>
         <link rel="icon" type="image/x-icon" href="/images/favicon-icon.png"> 
         <script src="snake.js"></script>
     </head>
     
     <body onload="init();">
-        <div style="display: flex; align-items: center; justify-content: center; height: 70vh;">
-            <canvas id="myCanvas" width="300" height="300">
-            </canvas> 
+        
+        <div class="div-common reset-div">
+            <button class="reset" onclick="reset();">Reset</button> 
         </div>
-        <div id="score-div" style="display: flex; align-items: center; justify-content: center;">
+        <div class="div-common canvas-div">
+            <canvas id="myCanvas" width="300" height="300"></canvas> 
+        </div>
+        <div class="div-common score-div">
             <b style="color: #042303;">Score:  &nbsp;<span id="score">0</span></b>
         </div>
     </body>

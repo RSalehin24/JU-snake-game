@@ -221,4 +221,8 @@ onkeydown = function(e) {
         rightDirection = false;
         leftDirection = false;
     }       
-};    
+};  
+
+function reset() {
+    
+};
