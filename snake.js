@@ -87,14 +87,8 @@ function doDrawing() {
     canvasContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     
     if (inGame) {
-
-        if(count >= SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
-            locateBoosterApple();
-            if(!boosterApple.drawBoosterApple && count == SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
-                setTimeout('dissappearBoosterApple()', 5000);
-            }
-            drawBoosterApple();
-        }
+        
+        drawBoosterApple();
 
         canvasContext.drawImage(appleImage, apple.x, apple.y);
 
@@ -208,8 +202,14 @@ function locateBoosterApple() {
 
 function drawBoosterApple() {
     
-    canvasContext.drawImage(boosterAppleImage, boosterApple.x, boosterApple.y);
-    boosterApple.drawBoosterApple = true;
+    if(count >= SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
+        locateBoosterApple();
+        if(!boosterApple.drawBoosterApple && count == SHOW_BOOSTERAPPLE_AFTER_APPLE_EATEN) {
+            setTimeout('dissappearBoosterApple()', 5000);
+        }
+        canvasContext.drawImage(boosterAppleImage, boosterApple.x, boosterApple.y);
+        boosterApple.drawBoosterApple = true;
+    }
 }
 
 function gameCycle() {
