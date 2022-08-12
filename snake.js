@@ -71,8 +71,6 @@ function loadImages() {
     appleImage.src = 'images/apple.png'; 
 }
 
-
-
 function createSnake() {
 
     for (let z = 0; z < snake.size; z++) {
@@ -81,21 +79,18 @@ function createSnake() {
     }
 }   
 
-function doDrawing() {
-    
+function clearCanvas() {
     canvasContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    
-    if (inGame) {
+}
 
-        canvasContext.drawImage(appleImage, apple.x, apple.y);
+function drawApple() {
+    canvasContext.drawImage(appleImage, apple.x, apple.y);
+}
 
-        for (let z = 0; z < snake.size; z++) {
-            canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
-        }    
-    } else {
-
-        gameOver();
-    }        
+function drawSnake() {
+    for (let z = 0; z < snake.size; z++) {
+        canvasContext.drawImage(bodyImage, snake.x[z], snake.y[z]);
+    }
 }
 
 function gameOver() {
@@ -108,33 +103,25 @@ function gameOver() {
     canvasContext.fillText('Game over', CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
 }
 
+function doDrawing() {
+    
+    clearCanvas();
+    
+    if (inGame) {
+        drawApple();
+        drawSnake();
+    } else {
+        gameOver();
+    }        
+}
+
+function locateApple() {
+
+}    
+
 function checkApple() {
 
 }
-
-function move() {
-
-    for (let z = snake.size; z > 0; z--) {
-        snake.x[z] = snake.x[(z - 1)];
-        snake.y[z] = snake.y[(z - 1)];
-    }
-
-    if (leftDirection) {
-        snake.x[0] -= CELL_SIZE;
-    }
-
-    if (rightDirection) {
-        snake.x[0] += CELL_SIZE;
-    }
-
-    if (upDirection) {
-        snake.y[0] -= CELL_SIZE;
-    }
-
-    if (downDirection) {
-        snake.y[0] += CELL_SIZE;
-    }
-}    
 
 function checkCollision() {
 
@@ -152,22 +139,6 @@ function checkCollision() {
 
     if (snake.x[0] < 0) {
       inGame = false;
-    }
-}
-
-function locateApple() {
-
-}    
-
-function gameCycle() {
-    
-    if (inGame) {
-
-        checkApple();
-        checkCollision();
-        move();
-        doDrawing();
-        setTimeout("gameCycle()", DELAY);
     }
 }
 
@@ -203,3 +174,39 @@ onkeydown = function(e) {
         leftDirection = false;
     }        
 };  
+
+function move() {
+
+    for (let z = snake.size; z > 0; z--) {
+        snake.x[z] = snake.x[(z - 1)];
+        snake.y[z] = snake.y[(z - 1)];
+    }
+
+    if (leftDirection) {
+        snake.x[0] -= CELL_SIZE;
+    }
+
+    if (rightDirection) {
+        snake.x[0] += CELL_SIZE;
+    }
+
+    if (upDirection) {
+        snake.y[0] -= CELL_SIZE;
+    }
+
+    if (downDirection) {
+        snake.y[0] += CELL_SIZE;
+    }
+}  
+
+function gameCycle() {
+    
+    if (inGame) {
+
+        checkApple();
+        checkCollision();
+        move();
+        doDrawing();
+        setTimeout("gameCycle()", DELAY);
+    }
+}
