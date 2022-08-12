@@ -7,5 +7,5 @@ This game has been taken from the github repository of "janbodnar" and later it 
 
 For dependency reason:
 
-'snake-life' branch has been extended from 'booster-apple' branch
-'increase-life-food' branch has been extended from 'snake-life' branch 
+>'snake-life' branch has been extended from 'booster-apple' branch
+>'increase-life-food' branch has been extended from 'snake-life' branch 
