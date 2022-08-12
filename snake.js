@@ -58,7 +58,7 @@ const DOWN_KEY = 40;
 let score = 0;
 let count = 0;
 let lifeTimeCount = 0;
-let showLifeAfterAppleEaten = 1;
+let showLifeAfterAppleEaten = 13;
 
 
 function init() {
