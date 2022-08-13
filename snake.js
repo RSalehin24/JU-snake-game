@@ -57,7 +57,7 @@ function init() {
     scoreSpan = document.getElementById("score");
 
     loadImages();
-    createSnake();
+    createInitialSnakePosition();
     locateApple();
     setTimeout("gameCycle()", DELAY);
 }    
@@ -71,7 +71,7 @@ function loadImages() {
     appleImage.src = 'images/apple.png'; 
 }
 
-function createSnake() {
+function createInitialSnakePosition() {
 
     for (let z = 0; z < snake.size; z++) {
         snake.x[z] = 50 - z * CELL_SIZE;
