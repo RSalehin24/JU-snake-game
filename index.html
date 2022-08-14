@@ -14,7 +14,8 @@
             .div-common {
                 display: flex; 
                 align-items: center; 
-                justify-content: center; 
+                justify-content: center;
+                padding: 5px; 
             }
 
             .canvas-div {
@@ -41,13 +42,16 @@
     <body>
 
         <div class="div-common start-div">
-            <button class="start" onclick="init();">Start</button> 
-
+            <button class="start" onclick="init();">Start</button>
+        </div>
+        <div class="div-common">
             <input type="checkbox" id="circular-way" name="circular-way" value="circular-way">
             <label for="circular-way">Circular way</label>
-            <input type="radio" id="killed-by-hitting-itself" name="killed-by-hitting-itself" value="killed-by-hitting-itself">
+        </div>
+        <div class="div-common">
+            <input type="radio" id="killed-by-hitting-itself" name="self-hit-beaviour" value="killed-by-hitting-itself">
             <label for="killed-by-hitting-itself">Killed by hitting itself</label>
-            <input type="radio" id="snake-body-disappear" name="snake-body-disappear" value="snake-body-dissapear">
+            <input type="radio" id="snake-body-disappear" name="self-hit-beaviour" value="snake-body-dissapear">
             <label for="snake-body-disappear">Snake body removed from bitten point</label>
         </div>
         <div class="div-common canvas-div">

@@ -16,7 +16,7 @@ let apple = {
 let snake = {
     x: [],
     y: [],
-    size: 3,
+    size: 3
 };
 
 let leftDirection = false;
@@ -71,6 +71,18 @@ function loadImages() {
     appleImage.src = 'images/apple.png'; 
 }
 
+function doDrawing() {
+
+    clearCanvas();
+
+    if (inGame) {
+        drawApple();
+        drawSnake();
+    } else {
+        gameOver();
+    }
+}
+
 function createInitialSnakePosition() {
 
     for (let z = 0; z < snake.size; z++) {
@@ -94,7 +106,6 @@ function drawSnake() {
 }
 
 function gameOver() {
-    
     canvasContext.fillStyle = 'white';
     canvasContext.textBaseline = 'middle'; 
     canvasContext.textAlign = 'center'; 
@@ -103,24 +114,12 @@ function gameOver() {
     canvasContext.fillText('Game over', CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
 }
 
-function doDrawing() {
-    
-    clearCanvas();
-    
-    if (inGame) {
-        drawApple();
-        drawSnake();
-    } else {
-        gameOver();
-    }        
-}
-
 function locateApple() {
-
+    // You have to write code here to place the apple in different position in the canvas
 }    
 
 function checkApple() {
-
+    // You have to check here whether the apple is eaten by the snake or not
 }
 
 function checkCollision() {
