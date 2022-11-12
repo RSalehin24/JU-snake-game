@@ -145,29 +145,26 @@ onkeydown = function(e) {
     
     let key = e.keyCode;
     
+    this.print(key)
     if ((key == LEFT_KEY) && (!rightDirection)) {
-        
         leftDirection = true;
         upDirection = false;
         downDirection = false;
     }
 
     if ((key == RIGHT_KEY) && (!leftDirection)) {
-        
         rightDirection = true;
         upDirection = false;
         downDirection = false;
     }
 
     if ((key == UP_KEY) && (!downDirection)) {
-        
         upDirection = true;
         rightDirection = false;
         leftDirection = false;
     }
 
     if ((key == DOWN_KEY) && (!upDirection)) {
-        
         downDirection = true;
         rightDirection = false;
         leftDirection = false;
@@ -201,7 +198,6 @@ function move() {
 function gameCycle() {
     
     if (inGame) {
-
         checkApple();
         checkCollision();
         move();

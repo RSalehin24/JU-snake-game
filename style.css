@@ -1,0 +1,51 @@
+.navbar {
+  text-align: center;
+  color: white;
+  background-color: #084905;
+  padding: 0.1%;
+  top: 0px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.div-menu{
+  width: 35%;
+  border: 1px solid black;
+  padding: 1.5%;
+}
+
+.menu-heading {
+  color: #0d8c07;
+}
+
+.div-canvas {
+  width: 65%;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  padding: 30px;
+}
+
+canvas {
+  background: black
+}
+
+.canvas-div {
+  margin-bottom: 15px;
+}
+
+.start {
+  font-size: 18px; 
+  color: #084905; 
+  border-color: #11850d; 
+  background: transparent; 
+  border-radius: 5px;
+}
+
+.start-div { 
+  margin-top: 5%;
+  margin-bottom: 5px;
+}
